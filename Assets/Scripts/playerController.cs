@@ -22,15 +22,12 @@ public class playerController : MonoBehaviour
     private float TrueMoveSpeed;
 	public float SprintSpeed;
     private float TrueSprintSpeed;
-    public float SpeedChangeRate = 10.0f;
     public float JumpHeight;
     private float verticalSpeed;
     private bool Crouching;
  
     private float jumpTimer;
     public float jumpCooldown = 0.1f;
-    public float FallTimeout = 0.15f;
-    private float fallTimer;
     private float terminalVelocity = 53.0f;
     
     void Start()
