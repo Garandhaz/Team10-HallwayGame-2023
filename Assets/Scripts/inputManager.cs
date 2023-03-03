@@ -10,6 +10,7 @@ public class inputManager : MonoBehaviour
     public Vector2 look;
     public bool jump;
     public bool sprint;
+    public bool crouch;
 
     [Header("Movement Settings")]
     public bool analogMovement;
@@ -41,9 +42,14 @@ public class inputManager : MonoBehaviour
         SprintInput(value.isPressed);
     }
 
-    public void OnTest()
+    public void OnCrouchHold(InputValue value)
     {
-        Debug.Log("Test Complete!");
+        CrouchInput(value.isPressed);
+    }
+
+    public void OnCrouchToggle(InputValue value)
+    {
+        CrouchToggleInput(value.isPressed);
     }
 
 
@@ -67,6 +73,16 @@ public class inputManager : MonoBehaviour
         sprint = newSprintState;
     }
     
+    public void CrouchInput (bool newCrouchState)
+    {
+        crouch = newCrouchState;
+    }
+
+    public void CrouchToggleInput (bool newCrouchToggleState)
+    {
+        crouch = !crouch;
+    }
+
     private void OnApplicationFocus(bool hasFocus)
     {
         SetCursorState(cursorLocked);

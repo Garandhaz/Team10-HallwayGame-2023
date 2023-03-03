@@ -19,10 +19,19 @@ public class playerController : MonoBehaviour
 
     private float speed;
     public float MoveSpeed;
+    private float TrueMoveSpeed;
 	public float SprintSpeed;
+    private float TrueSprintSpeed;
     public float SpeedChangeRate = 10.0f;
+    public float JumpHeight;
     private float verticalSpeed;
+    private bool Crouching;
  
+    private float jumpTimer;
+    public float jumpCooldown = 0.1f;
+    public float FallTimeout = 0.15f;
+    private float fallTimer;
+    private float terminalVelocity = 53.0f;
     
     void Start()
     {
@@ -31,6 +40,8 @@ public class playerController : MonoBehaviour
         input = GetComponent<inputManager>();
         playerInput = GetComponent<PlayerInput>();
         playerInput.actions.Enable();
+        TrueSprintSpeed = SprintSpeed;
+        TrueMoveSpeed = MoveSpeed;
     }
  
     void Update()
@@ -45,7 +56,7 @@ public class playerController : MonoBehaviour
 
         transform.Rotate(Vector3.up * cameraRotation);
 
-        // player movement
+        //player movement
 
         float targetSpeed = input.sprint ? SprintSpeed : MoveSpeed;
         if (input.move == Vector2.zero) targetSpeed = 0.0f;
@@ -54,9 +65,59 @@ public class playerController : MonoBehaviour
 
         Vector3 inputDirection = new Vector3(input.move.x, 0.0f, input.move.y).normalized;
         if (input.move != Vector2.zero)
-			{
-				inputDirection = transform.right * input.move.x + transform.forward * input.move.y;
-			}
+        {
+            inputDirection = transform.right * input.move.x + transform.forward * input.move.y;
+        }
         characterController.Move(inputDirection.normalized * (targetSpeed * Time.deltaTime) + new Vector3(0.0f, verticalSpeed, 0.0f) * Time.deltaTime); //move player
-    }
+
+        //jumping and gravity
+
+        if (characterController.isGrounded) //check if character is on ground
+        {
+            if (verticalSpeed < 0.0f) //Keeps velocity consistent while grounded
+            {
+                verticalSpeed = -2f;
+            }
+
+            if (input.jump && jumpTimer <= 0.0f) //if input pressed and cooldown is settled
+            {
+                verticalSpeed = Mathf.Sqrt(JumpHeight * -2f * Gravity); //jump
+            }
+
+            if (jumpTimer >= 0.0f)
+            {
+                jumpTimer -= Time.deltaTime; //Counts cooldown timer down while greater than 0
+            }
+        }
+        else
+        {
+            jumpTimer = jumpCooldown; //Keeps cooldown consistent while in the air
+            input.jump = false; //do not jump if grounded
+        }
+
+        if (verticalSpeed < terminalVelocity) //Applies gravity while fall speed is under max fall speed
+        {
+            verticalSpeed += Gravity * Time.deltaTime;
+        }
+
+        //crouching
+
+        if (input.crouch)
+        {
+            if(Crouching == false)
+            {
+                transform.localScale = transform.localScale - new Vector3(0, 0.5f, 0);
+                Crouching = true;    
+                MoveSpeed = MoveSpeed * 0.5f;
+                SprintSpeed = SprintSpeed * 0.5f;
+            }
+        }
+        else if (Crouching == true)
+        {
+            transform.localScale = transform.localScale + new Vector3(0, 0.5f, 0);
+            Crouching = false;
+            MoveSpeed = TrueMoveSpeed;
+            SprintSpeed = TrueSprintSpeed;
+        }
+	}
 }

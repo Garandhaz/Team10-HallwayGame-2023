@@ -40,6 +40,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Crouch Toggle",
+                    "type": "Button",
+                    "id": "38474dfa-f4f2-4787-a33d-9e390fac69c3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Crouch Hold",
+                    "type": "Button",
+                    "id": "9f4215b1-49f8-400c-9ede-ba66e83c8792",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -157,7 +175,7 @@
                     "name": "",
                     "id": "46056bfd-d1f0-43c8-876b-492178ec59cf",
                     "path": "<Keyboard>/leftShift",
-                    "interactions": "",
+                    "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "Sprint",
@@ -168,10 +186,32 @@
                     "name": "",
                     "id": "b1e4b880-bc7e-46cf-af2c-b7c98948f8e6",
                     "path": "<XInputController>/leftTrigger",
-                    "interactions": "",
+                    "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "Xbox Controller",
                     "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "73620fb9-580f-446d-9bf6-317440f46454",
+                    "path": "<XInputController>/leftStickPress",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Xbox Controller",
+                    "action": "Crouch Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c69715c7-c071-4b1e-b841-f7070edb0b50",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Crouch Hold",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
