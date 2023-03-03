@@ -50,7 +50,6 @@ public class playerController : MonoBehaviour
         float targetSpeed = input.sprint ? SprintSpeed : MoveSpeed;
         if (input.move == Vector2.zero) targetSpeed = 0.0f;
         float currentSpeed = new Vector3(characterController.velocity.x, 0.0f, characterController.velocity.z).magnitude;
-        float speedOffset = 0.1f;
         float inputMagnitude = input.analogMovement ? input.move.magnitude : 1f; //if using analog stick, scale with input. Else, magnitude is 1f
 
         Vector3 inputDirection = new Vector3(input.move.x, 0.0f, input.move.y).normalized;
