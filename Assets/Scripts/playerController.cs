@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class playerController : MonoBehaviour
 {
-
     public float cameraSpeed;
     private float cameraRotation;
     private Camera cam;
@@ -115,6 +115,10 @@ public class playerController : MonoBehaviour
             Crouching = false;
             MoveSpeed = TrueMoveSpeed;
             SprintSpeed = TrueSprintSpeed;
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 	}
 }
