@@ -4192,6 +4192,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7580355769215563711, guid: 67b904083dd254f4182e7279679a364d, type: 3}
+      propertyPath: MoveSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7580355769215563711, guid: 67b904083dd254f4182e7279679a364d, type: 3}
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 1233422921}
@@ -4215,6 +4219,10 @@ PrefabInstance:
       propertyPath: staminaBar
       value: 
       objectReference: {fileID: 1916742087}
+    - target: {fileID: 7580355769215563711, guid: 67b904083dd254f4182e7279679a364d, type: 3}
+      propertyPath: SprintSpeed
+      value: 8.75
+      objectReference: {fileID: 0}
     - target: {fileID: 7580355769215563711, guid: 67b904083dd254f4182e7279679a364d, type: 3}
       propertyPath: invisActive
       value: 
