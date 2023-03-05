@@ -2881,24 +2881,16 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7580355769215563711, guid: 67b904083dd254f4182e7279679a364d, type: 3}
+      propertyPath: healthBar
+      value: 
+      objectReference: {fileID: 1233422921}
+    - target: {fileID: 7580355769215563711, guid: 67b904083dd254f4182e7279679a364d, type: 3}
       propertyPath: pauseMenu
       value: 
       objectReference: {fileID: 1403267545}
     - target: {fileID: 7580355769215563711, guid: 67b904083dd254f4182e7279679a364d, type: 3}
-      propertyPath: phaseTime
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7580355769215563711, guid: 67b904083dd254f4182e7279679a364d, type: 3}
-      propertyPath: invisibleTime
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7580355769215563711, guid: 67b904083dd254f4182e7279679a364d, type: 3}
-      propertyPath: phaseCooldown
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7580355769215563711, guid: 67b904083dd254f4182e7279679a364d, type: 3}
-      propertyPath: invisibleCooldown
-      value: 10
-      objectReference: {fileID: 0}
+      propertyPath: staminaBar
+      value: 
+      objectReference: {fileID: 1916742087}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67b904083dd254f4182e7279679a364d, type: 3}

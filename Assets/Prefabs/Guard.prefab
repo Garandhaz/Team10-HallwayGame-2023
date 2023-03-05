@@ -113,6 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
+  playerScript: {fileID: 0}
   viewRadius: 50
   viewAngle: 120
   guardEyeLevel: 1.5

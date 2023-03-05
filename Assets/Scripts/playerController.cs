@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class playerController : MonoBehaviour
 {
@@ -11,6 +12,11 @@ public class playerController : MonoBehaviour
     private Camera cam;
     public GameObject pauseMenu;
     public bool paused;
+
+    public Image healthBar;
+    public Image staminaBar;
+    private float healthSize;
+    private float staminaSize;
 
     CharacterController characterController;
     private inputManager input;
@@ -23,6 +29,11 @@ public class playerController : MonoBehaviour
     public float MoveSpeed;
     private float TrueMoveSpeed;
 	public float SprintSpeed;
+    public float SprintMax;
+    private float SprintSpent;
+    public float SprintRechargeSpeed;
+    public float SprintRechargeCooldown;
+    private float SprintRechargeTimer;
     private float TrueSprintSpeed;
     public float JumpHeight;
     private float verticalSpeed;
@@ -52,6 +63,9 @@ public class playerController : MonoBehaviour
         playerInput.actions.Enable();
         TrueSprintSpeed = SprintSpeed;
         TrueMoveSpeed = MoveSpeed;
+        healthSize = healthBar.rectTransform.rect.width;
+        staminaSize = staminaBar.rectTransform.rect.width;
+        SprintSpent = SprintMax;
     }
  
     void Update()
@@ -83,8 +97,22 @@ public class playerController : MonoBehaviour
         transform.Rotate(Vector3.up * cameraRotation);
 
         //player movement
+        SprintRechargeTimer += Time.deltaTime;
 
-        float targetSpeed = input.sprint ? SprintSpeed : MoveSpeed;
+        float targetSpeed = (input.sprint && SprintSpent > 0) ? SprintSpeed : MoveSpeed;
+        if(input.sprint && SprintSpent > 0)
+        {
+            SprintSpent = SprintSpent - Time.deltaTime;
+            staminaBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, staminaSize * (SprintSpent / SprintMax));
+            SprintRechargeTimer = 0;
+            Debug.Log("Stamina: " + SprintSpent);
+        }
+        else if (SprintSpent < SprintMax && SprintRechargeTimer >= SprintRechargeCooldown)
+        {
+            SprintSpent += SprintRechargeSpeed * Time.deltaTime;
+            staminaBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, staminaSize * (SprintSpent / SprintMax));
+            Debug.Log("Stamina: " + SprintSpent);
+        }
         if (input.move == Vector2.zero) targetSpeed = 0.0f;
         float currentSpeed = new Vector3(characterController.velocity.x, 0.0f, characterController.velocity.z).magnitude;
         float inputMagnitude = input.analogMovement ? input.move.magnitude : 1f; //if using analog stick, scale with input. Else, magnitude is 1f

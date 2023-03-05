@@ -186,6 +186,9 @@ MonoBehaviour:
   jump: 0
   sprint: 0
   crouch: 0
+  invisible: 0
+  phase: 0
+  pause: 0
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
@@ -202,11 +205,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraSpeed: 0.15
+  pauseMenu: {fileID: 0}
+  paused: 0
+  healthBar: {fileID: 0}
+  staminaBar: {fileID: 0}
   Gravity: -15
   MoveSpeed: 10
   SprintSpeed: 17.5
+  SprintMax: 4
+  SprintRechargeSpeed: 0.5
+  SprintRechargeCooldown: 2
   JumpHeight: 1.5
   jumpCooldown: 0.1
+  isInvisible: 0
+  invisibleCooldown: 10
+  phaseCooldown: 10
+  invisibleTime: 3
+  phaseTime: 3
 --- !u!1 &7580355769546211825
 GameObject:
   m_ObjectHideFlags: 0
