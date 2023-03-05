@@ -217,8 +217,8 @@ MonoBehaviour:
   phaseActive: {fileID: 0}
   healthPoints: 4
   cameraSpeed: 0.15
-  MoveSpeed: 10
-  SprintSpeed: 17.5
+  MoveSpeed: 5
+  SprintSpeed: 8.75
   SprintMax: 4
   SprintRechargeSpeed: 0.5
   SprintRechargeCooldown: 2
