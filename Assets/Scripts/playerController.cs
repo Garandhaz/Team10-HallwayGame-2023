@@ -9,6 +9,8 @@ public class playerController : MonoBehaviour
     public float cameraSpeed;
     private float cameraRotation;
     private Camera cam;
+    public GameObject pauseMenu;
+    public bool paused;
 
     CharacterController characterController;
     private inputManager input;
@@ -29,6 +31,17 @@ public class playerController : MonoBehaviour
     private float jumpTimer;
     public float jumpCooldown = 0.1f;
     private float terminalVelocity = 53.0f;
+
+    public bool isInvisible = false;
+    private bool isPhasing;
+    public float invisibleCooldown;
+    public float phaseCooldown;
+    public float invisibleTime;
+    public float phaseTime;
+    private float invisibleTimer;
+    private float phaseTimer;
+    private float invisibleCooldownTimer;
+    private float phaseCooldownTimer;
     
     void Start()
     {
@@ -43,6 +56,22 @@ public class playerController : MonoBehaviour
  
     void Update()
     {
+        //pause
+
+        if (input.pause && paused == false)
+        {
+            Time.timeScale = 0f;
+            paused = true;
+            pauseMenu.SetActive(true);
+        }
+        else if(input.pause == false && paused == true)
+        {
+            Time.timeScale = 1;
+            paused = false;
+            pauseMenu.SetActive(false);
+        }
+        if(paused)return;
+
         //camera movement
         cameraPitch -= input.look.y * cameraSpeed;
         cameraRotation = input.look.x * cameraSpeed;
@@ -119,6 +148,13 @@ public class playerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        //abilities
+
+        if (input.invisible && invisibleCooldownTimer >= invisibleCooldown)
+        {
+            isInvisible = true;
         }
 	}
 }

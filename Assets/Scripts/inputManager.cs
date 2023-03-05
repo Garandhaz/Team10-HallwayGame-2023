@@ -11,6 +11,9 @@ public class inputManager : MonoBehaviour
     public bool jump;
     public bool sprint;
     public bool crouch;
+    public bool invisible;
+    public bool phase;
+    public bool pause;
 
     [Header("Movement Settings")]
     public bool analogMovement;
@@ -52,6 +55,20 @@ public class inputManager : MonoBehaviour
         CrouchToggleInput(value.isPressed);
     }
 
+    public void OnInvisible(InputValue value)
+    {
+        InvisibleInput(value.isPressed);
+    }
+
+    public void OnPhase(InputValue value)
+    {
+        PhaseInput(value.isPressed);
+    }
+
+    public void OnPause(InputValue value)
+    {
+        PauseInput(value.isPressed);
+    }
 
     public void MoveInput(Vector2 newMoveDirection)
     {
@@ -81,6 +98,21 @@ public class inputManager : MonoBehaviour
     public void CrouchToggleInput (bool newCrouchToggleState)
     {
         crouch = !crouch;
+    }
+
+    public void InvisibleInput (bool newInvisibleState)
+    {
+        invisible = newInvisibleState;
+    }
+
+    public void PhaseInput (bool newPhaseState)
+    {
+        phase = newPhaseState;
+    }
+
+    public void PauseInput (bool newPauseState)
+    {
+        pause = !pause;
     }
 
     private void OnApplicationFocus(bool hasFocus)

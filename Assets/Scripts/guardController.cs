@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class guardController : MonoBehaviour
 {
     public GameObject Player;
+    public playerController playerScript;
     NavMeshAgent agent;
 
     public float viewRadius;
@@ -58,7 +59,7 @@ public class guardController : MonoBehaviour
             {
                 float dstToTarget = Vector3.Distance (fieldOfViewPosition, target.position); //Gets distance between gameobject and target
 
-                if (!Physics.Raycast (fieldOfViewPosition, dirToTarget, dstToTarget, obstacleMask)) //If no obstacle in distance between player and gameobject
+                if (!Physics.Raycast (fieldOfViewPosition, dirToTarget, dstToTarget, obstacleMask) && !playerScript.isInvisible) //If no obstacle in distance between player and gameobject
                 {
                     visibleTargets.Add (target);
                     GetComponent<UnityEngine.AI.NavMeshAgent>().destination = Player.transform.position; //Moves gameobject to target's last seen position, updates when target remains in gameobject's FoV
