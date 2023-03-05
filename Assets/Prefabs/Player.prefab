@@ -206,6 +206,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraSpeed: 0.15
   pauseMenu: {fileID: 0}
+  startingArea: {fileID: 0}
+  inStartingArea: 0
   paused: 0
   healthBar: {fileID: 0}
   staminaBar: {fileID: 0}

@@ -7,12 +7,13 @@ using UnityEngine.UI;
 
 public class playerController : MonoBehaviour
 {
-    public float cameraSpeed;
-    private float cameraRotation;
-    private Camera cam;
+    [Header("HUD and Core Mechanics")]
     public GameObject pauseMenu;
+    public GameObject startingArea;
+    public bool inStartingArea;
     public bool paused;
 
+    [Header("Status Bars")]
     public Image healthBar;
     public Image staminaBar;
     private float healthSize;
@@ -21,7 +22,11 @@ public class playerController : MonoBehaviour
     CharacterController characterController;
     private inputManager input;
     private PlayerInput playerInput;
-    public float Gravity = -15.0f;
+
+    private Camera cam; //camera variables
+    [Header("Movement")]
+    public float cameraSpeed;
+    private float cameraRotation;
     private float cameraPitch;
     private float rotationSpeed;
 
@@ -37,12 +42,14 @@ public class playerController : MonoBehaviour
     private float TrueSprintSpeed;
     public float JumpHeight;
     private float verticalSpeed;
+    public float Gravity = -15.0f;
     private bool Crouching;
  
     private float jumpTimer;
     public float jumpCooldown = 0.1f;
     private float terminalVelocity = 53.0f;
-
+    
+    [Header("Abilities")]
     public bool isInvisible = false;
     private bool isPhasing;
     public float invisibleCooldown;
@@ -97,21 +104,18 @@ public class playerController : MonoBehaviour
         transform.Rotate(Vector3.up * cameraRotation);
 
         //player movement
-        SprintRechargeTimer += Time.deltaTime;
-
-        float targetSpeed = (input.sprint && SprintSpent > 0) ? SprintSpeed : MoveSpeed;
-        if(input.sprint && SprintSpent > 0)
+        SprintRechargeTimer += Time.deltaTime; //Creates cooldown for sprint recharge
+        float targetSpeed = (input.sprint && SprintSpent > 0) ? SprintSpeed : MoveSpeed; //checks for sprint input and if sufficient stamina remaining
+        if(input.sprint && SprintSpent > 0) //If sprinting
         {
-            SprintSpent = SprintSpent - Time.deltaTime;
-            staminaBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, staminaSize * (SprintSpent / SprintMax));
-            SprintRechargeTimer = 0;
-            Debug.Log("Stamina: " + SprintSpent);
+            SprintSpent = SprintSpent - Time.deltaTime; //Reduces available stamina whilee sprinting
+            staminaBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, staminaSize * (SprintSpent / SprintMax)); //scales stamina bar
+            SprintRechargeTimer = 0; //Resets recharge cooldown while sprinting
         }
-        else if (SprintSpent < SprintMax && SprintRechargeTimer >= SprintRechargeCooldown)
+        else if (SprintSpent < SprintMax && SprintRechargeTimer >= SprintRechargeCooldown) //if not sprinting, less than max stamina, and recharge cooldown has passed
         {
-            SprintSpent += SprintRechargeSpeed * Time.deltaTime;
-            staminaBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, staminaSize * (SprintSpent / SprintMax));
-            Debug.Log("Stamina: " + SprintSpent);
+            SprintSpent += SprintRechargeSpeed * Time.deltaTime; //recharges stamina
+            staminaBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, staminaSize * (SprintSpent / SprintMax)); //scales stamina bar
         }
         if (input.move == Vector2.zero) targetSpeed = 0.0f;
         float currentSpeed = new Vector3(characterController.velocity.x, 0.0f, characterController.velocity.z).magnitude;
