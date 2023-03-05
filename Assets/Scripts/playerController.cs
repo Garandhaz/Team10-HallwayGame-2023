@@ -9,7 +9,6 @@ public class playerController : MonoBehaviour
 {
     [Header("HUD and Core Mechanics")]
     public GameObject pauseMenu;
-    public GameObject startingArea;
     public bool inStartingArea;
     public bool paused;
 
@@ -18,6 +17,12 @@ public class playerController : MonoBehaviour
     public Image staminaBar;
     private float healthSize;
     private float staminaSize;
+    public Image invisibilityIcon;
+    public GameObject invisActive;
+    public Image phaseIcon;
+    public GameObject phaseActive;
+    private float invisSize;
+    private float phaseSize;
 
     CharacterController characterController;
     private inputManager input;
@@ -72,7 +77,10 @@ public class playerController : MonoBehaviour
         TrueMoveSpeed = MoveSpeed;
         healthSize = healthBar.rectTransform.rect.width;
         staminaSize = staminaBar.rectTransform.rect.width;
+        invisSize = invisibilityIcon.rectTransform.rect.height;
+        phaseSize = phaseIcon.rectTransform.rect.height;
         SprintSpent = SprintMax;
+        invisibleCooldownTimer = invisibleCooldown;
     }
  
     void Update()
@@ -184,9 +192,22 @@ public class playerController : MonoBehaviour
 
         //abilities
 
+        invisibleCooldownTimer += Time.deltaTime;
         if (input.invisible && invisibleCooldownTimer >= invisibleCooldown)
         {
             isInvisible = true;
+            invisibleCooldownTimer = 0;
+            invisibilityIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, invisSize * 0);
+            invisActive.SetActive(true);
         }
-	}
+        if(invisibleCooldownTimer >= invisibleTime)
+        {
+            isInvisible = false;
+            invisActive.SetActive(false);
+        }
+        if (invisibleCooldownTimer < invisibleCooldown)
+        {
+            invisibilityIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, invisSize * (invisibleCooldownTimer / invisibleCooldown));
+        }
+	}   
 }
