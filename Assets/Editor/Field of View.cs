@@ -20,6 +20,9 @@ public class FieldofView : Editor
 		Handles.DrawLine (fieldOfViewPosition, fieldOfViewPosition + viewAngleA * fow.viewRadius); //Draws lines to indicate angle of FoV
 		Handles.DrawLine (fieldOfViewPosition, fieldOfViewPosition + viewAngleB * fow.viewRadius);
 
+		Handles.color = Color.blue;
+		Handles.DrawWireArc (fieldOfViewPosition, Vector3.up, Vector3.forward, 360, fow.attackRadius); //Draw attack radius
+
 		Handles.color = Color.red;
 		foreach (Transform visibleTarget in fow.visibleTargets) //draws a line to all targets in FoV not blocked by obstacles
         {

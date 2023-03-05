@@ -9,6 +9,8 @@ public class playerController : MonoBehaviour
 {
     [Header("HUD and Core Mechanics")]
     public GameObject pauseMenu;
+    public GameObject winScreen;
+    public GameObject loseScreen;
     public bool inStartingArea;
     public bool paused;
 
@@ -23,6 +25,8 @@ public class playerController : MonoBehaviour
     public GameObject phaseActive;
     private float invisSize;
     private float phaseSize;
+    public float healthPoints;
+    private float currentHealth;
 
     CharacterController characterController;
     private inputManager input;
@@ -80,6 +84,7 @@ public class playerController : MonoBehaviour
         invisSize = invisibilityIcon.rectTransform.rect.height;
         phaseSize = phaseIcon.rectTransform.rect.height;
         SprintSpent = SprintMax;
+        currentHealth = healthPoints;
         invisibleCooldownTimer = invisibleCooldown;
     }
  
@@ -210,4 +215,21 @@ public class playerController : MonoBehaviour
             invisibilityIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, invisSize * (invisibleCooldownTimer / invisibleCooldown));
         }
 	}   
+
+    public void takeDamage(float damage)
+    {
+        currentHealth -= damage;
+        healthBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, healthSize * (currentHealth / healthPoints));
+        if(currentHealth <= 0)
+        {
+            loseScreen.SetActive(true);
+            Time.timeScale = 0f;
+        }
+    }
+
+    public void win()
+    {
+        winScreen.SetActive(true);
+        Time.timeScale = 0f;
+    }
 }

@@ -10,6 +10,10 @@ public class guardController : MonoBehaviour
     NavMeshAgent agent;
 
     public float viewRadius;
+    public float attackDamage;
+    public float attackCooldown;
+    private float attackCooldownTimer;
+    public float attackRadius;
     [Range(0,360)]
     public float viewAngle;
     public float guardEyeLevel = 1.5f; //height of field of view
@@ -31,12 +35,12 @@ public class guardController : MonoBehaviour
         StartCoroutine ("FindTargetsWithDelay", .2f);
     }
 
-
     IEnumerator FindTargetsWithDelay(float delay) //find player in Field of View at time intervals
     {
         while (true) 
         {
             yield return new WaitForSeconds (delay);
+            attackCooldownTimer += Time.fixedDeltaTime * 10;
             FindVisibleTargets ();
         }
     }
@@ -64,6 +68,12 @@ public class guardController : MonoBehaviour
                     visibleTargets.Add (target);
                     GetComponent<UnityEngine.AI.NavMeshAgent>().destination = Player.transform.position; //Moves gameobject to target's last seen position, updates when target remains in gameobject's FoV
                     looking = false;
+                    if(Vector3.Distance(transform.position, Player.transform.position) <= attackRadius && attackCooldownTimer >= attackCooldown)
+                    {
+                        Debug.Log("Damage Dealt!");
+                        playerScript.takeDamage(attackDamage);
+                        attackCooldownTimer = 0;
+                    }
                 }
             }
         }
