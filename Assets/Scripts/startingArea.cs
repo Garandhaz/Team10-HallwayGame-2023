@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class startingArea : MonoBehaviour
 {
+    public playerController playerScript;
+
     private void OnTriggerEnter(Collider other)
     {
-        playerController controller = other.GetComponent<playerController >();
-        controller.inStartingArea = true;
+        if (other.tag == "Player")
+        {
+            playerScript.inStartingArea = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        playerController controller = other.GetComponent<playerController >();
-        controller.inStartingArea = false;
+        if (other.tag == "Player")
+        {
+            playerScript.inStartingArea = false;
+        }
     }
-
 }

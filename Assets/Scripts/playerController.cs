@@ -13,6 +13,7 @@ public class playerController : MonoBehaviour
     public GameObject loseScreen;
     public bool inStartingArea;
     public bool paused;
+    private Rigidbody rigidBody;
 
     [Header("Status Bars")]
     public Image healthBar;
@@ -61,6 +62,7 @@ public class playerController : MonoBehaviour
     [Header("Abilities")]
     public bool isInvisible = false;
     private bool isPhasing;
+    public bool insideWall;
     public float invisibleCooldown;
     public float phaseCooldown;
     public float invisibleTime;
@@ -74,6 +76,7 @@ public class playerController : MonoBehaviour
     {
         cam = Camera.main;
         characterController = GetComponent<CharacterController>();
+        rigidBody = GetComponent<Rigidbody>();
         input = GetComponent<inputManager>();
         playerInput = GetComponent<PlayerInput>();
         playerInput.actions.Enable();
@@ -86,6 +89,7 @@ public class playerController : MonoBehaviour
         SprintSpent = SprintMax;
         currentHealth = healthPoints;
         invisibleCooldownTimer = invisibleCooldown;
+        phaseCooldownTimer = phaseCooldown;
     }
  
     void Update()
@@ -190,13 +194,9 @@ public class playerController : MonoBehaviour
             MoveSpeed = TrueMoveSpeed;
             SprintSpeed = TrueSprintSpeed;
         }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
 
         //abilities
-
+        //invisibility
         invisibleCooldownTimer += Time.deltaTime;
         if (input.invisible && invisibleCooldownTimer >= invisibleCooldown)
         {
@@ -214,7 +214,44 @@ public class playerController : MonoBehaviour
         {
             invisibilityIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, invisSize * (invisibleCooldownTimer / invisibleCooldown));
         }
+        //phasing
+        phaseCooldownTimer += Time.deltaTime;
+        if (input.phase && phaseCooldownTimer >= phaseCooldown)
+        {
+            phaseCooldownTimer = 0;
+            phaseIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, phaseSize * 0);
+            phaseActive.SetActive(true);
+            isPhasing = true;
+        }
+        if(phaseCooldownTimer >= phaseTime && !insideWall)
+        {
+            isPhasing = false;
+            phaseActive.SetActive(false);
+        }
+        if (phaseCooldownTimer < phaseCooldown)
+        {
+            phaseIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, phaseSize * (phaseCooldownTimer / phaseCooldown));
+        }
 	}   
+
+    void OnControllerColliderHit(ControllerColliderHit collision)
+    {
+        if(collision.collider.tag == "Obstacle" && isPhasing)
+        {
+            collision.collider.isTrigger = true;
+            insideWall = true;
+        }   
+    }
+
+    private void OnTriggerExit(Collider collision)
+    {
+        if(collision.GetComponent<Collider>().tag == "Obstacle")
+        {
+            insideWall = false;
+            collision.GetComponent<Collider>().isTrigger = false;
+            phaseCooldownTimer = phaseTime;
+        }
+    }
 
     public void takeDamage(float damage)
     {
