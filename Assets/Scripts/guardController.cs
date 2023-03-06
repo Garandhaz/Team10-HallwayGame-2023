@@ -8,6 +8,9 @@ public class guardController : MonoBehaviour
     public GameObject Player;
     public playerController playerScript;
     NavMeshAgent agent;
+    Animator animator;
+    AudioSource audioSource;
+    public AudioClip Damaged;
 
     public float viewRadius;
     public float attackDamage;
@@ -32,6 +35,8 @@ public class guardController : MonoBehaviour
     void Start() 
     {
         agent = GetComponent<NavMeshAgent>();
+        audioSource = GetComponent<AudioSource>();
+        animator = GetComponentInChildren<Animator>();
         StartCoroutine ("FindTargetsWithDelay", .2f);
     }
 
@@ -73,6 +78,7 @@ public class guardController : MonoBehaviour
                         Debug.Log("Damage Dealt!");
                         playerScript.takeDamage(attackDamage);
                         attackCooldownTimer = 0;
+                        audioSource.PlayOneShot(Damaged);
                     }
                 }
             }
@@ -81,6 +87,7 @@ public class guardController : MonoBehaviour
 
     IEnumerator lookAround(float time)
     {
+        animator.SetBool("Moving", false);
         looking = true;
         Quaternion from = transform.rotation;
         Quaternion target = Quaternion.Euler(0, transform.eulerAngles.y + 90, 0);
@@ -119,6 +126,7 @@ public class guardController : MonoBehaviour
         Vector3 finalPosition = hit.position;
         Debug.DrawRay(finalPosition, Vector3.up, Color.blue, 1.0f); //Debug, draws random point for visualization
         agent.SetDestination(finalPosition);
+        animator.SetBool("Moving", true);
         looking = false;
     }
 

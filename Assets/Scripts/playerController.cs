@@ -13,7 +13,9 @@ public class playerController : MonoBehaviour
     public GameObject loseScreen;
     public bool inStartingArea;
     public bool paused;
-    private Rigidbody rigidBody;
+    AudioSource audioSource;
+    public AudioClip damageMusic;
+    public AudioClip bkgMusic;
 
     [Header("Status Bars")]
     public Image healthBar;
@@ -76,9 +78,11 @@ public class playerController : MonoBehaviour
     {
         cam = Camera.main;
         characterController = GetComponent<CharacterController>();
-        rigidBody = GetComponent<Rigidbody>();
         input = GetComponent<inputManager>();
         playerInput = GetComponent<PlayerInput>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = bkgMusic;
+        audioSource.Play();
         playerInput.actions.Enable();
         TrueSprintSpeed = SprintSpeed;
         TrueMoveSpeed = MoveSpeed;
@@ -257,10 +261,16 @@ public class playerController : MonoBehaviour
     {
         currentHealth -= damage;
         healthBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, healthSize * (currentHealth / healthPoints));
+        if (audioSource.clip == bkgMusic) 
+        {
+            audioSource.clip = damageMusic;
+            audioSource.Play();
+        }
         if(currentHealth <= 0)
         {
             loseScreen.SetActive(true);
             Time.timeScale = 0f;
+            audioSource.Stop();
         }
     }
 
@@ -268,5 +278,6 @@ public class playerController : MonoBehaviour
     {
         winScreen.SetActive(true);
         Time.timeScale = 0f;
+        audioSource.Stop();
     }
 }
