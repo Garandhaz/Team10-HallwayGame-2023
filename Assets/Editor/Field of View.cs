@@ -11,7 +11,7 @@ public class FieldofView : Editor
     void OnSceneGUI() 
     {
 		guardController fow = (guardController)target;
-        fieldOfViewPosition = new Vector3(fow.transform.position.x, fow.guardEyeLevel, fow.transform.position.z);		
+        fieldOfViewPosition = new Vector3(fow.transform.position.x, (fow.transform.position.y + fow.guardEyeLevel), fow.transform.position.z);		
 		Handles.color = Color.white;
 		Handles.DrawWireArc (fieldOfViewPosition, Vector3.up, Vector3.forward, 360, fow.viewRadius); //Draws a circle around FoV radius
 		Vector3 viewAngleA = fow.DirFromAngle (-fow.viewAngle / 2, false);

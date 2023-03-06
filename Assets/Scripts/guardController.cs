@@ -51,7 +51,7 @@ public class guardController : MonoBehaviour
         {
              StartCoroutine(lookAround(lookingTime));
         }
-        fieldOfViewPosition = new Vector3(transform.position.x, guardEyeLevel, transform.position.z); //sets FoV position to custom height
+        fieldOfViewPosition = new Vector3(transform.position.x, (transform.position.y + guardEyeLevel), transform.position.z); //sets FoV position to custom height
         visibleTargets.Clear ();
         Collider[] targetsInViewRadius = Physics.OverlapSphere (fieldOfViewPosition , viewRadius, targetMask); //draws sphere around gameobject
 
